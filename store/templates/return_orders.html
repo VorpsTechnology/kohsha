@@ -1,0 +1,15 @@
+
+<h1>Return Order Details</h1>
+
+<h3>User: {{ return_order.user }}</h3>
+<h3>Return Requested: {{ return_order.return_requested }}</h3>
+<h3>Return Status: {{ return_order.return_status }}</h3>
+<h3>Return Date: {{ return_order.return_date }}</h3>
+<h3>Return Reason: {{ return_order.return_reason }}</h3>
+<h3>Review Description: {{ return_order.review_description }}</h3>
+
+{% if return_order.return_granted %}
+    <h2>Return Granted</h2>
+{% else %}
+    <h2>Return Not Granted</h2>
+{% endif %}

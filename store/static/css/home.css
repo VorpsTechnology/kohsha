@@ -1,0 +1,13 @@
+
+.content{
+    padding: 40px;
+    font-size: 20px;
+}
+
+#card{
+    width:150px
+}
+.flex-container {
+    display: flex;
+    background-color: DodgerBlue;
+  }

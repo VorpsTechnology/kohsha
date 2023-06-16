@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% load cart %}
+{% load custom_filter %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+<style>
+	.productbtn{
+		background-color: #A46B42;
+		border-radius: 5px;
+		padding: 7px;
+		width: 100%;
+		border-color: transparent;
+		font-weight: 650;
+		font-size: 18px;
+	}
+	#productcard{
+		border: 1px solid #fff;
+		border-radius: 15px;
+		box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+		
+		height: auto;
+		overflow: hidden;
+		position: relative;
+		width: 370px;
+	}
+
+	.list-group a:hover{
+		background-color: #A46B42; 
+		color:white	
+	}
+	
+	.list-group a{
+	color: #A46B42; 
+		
+	}
+	.list-group {
+		border-color: #A46B42; 
+			
+		}
+	#overbutton.hover{
+        background-color: #A46B42; 
+    }
+
+	
+</style>
+
+<!-- body -->
+<div class="container-fluid mt-4">
+	<div class="row">
+
+
+		<!-- filter -->
+
+		<div  class="col-lg-3 mx-auto" style='border:0'>
+			<div class="list-group">
+
+				<a href="/store?category={{category.id}}" id='overbutton' class="list-group-item list-group-item-action ">All Products</a>
+
+				{% for category in categories %}
+				<a href="/store?category={{category.id}}" id='overbutton'
+					class="list-group-item list-group-item-action  ">{{category.name}}</a>
+				{% endfor %}
+			</div>
+		</div>
+
+		<!-- all products -->
+		<div id='products' class="col-lg-9 mx-auto">
+			<div class="row mx-auto">
+				{% for product in products %}
+				<div id='productcard' class="card mx-auto mb-3" id={{product.id}} style="width: 18rem;">
+					<img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
+					<div class="card-body">
+						<p class="card-title">{{product.name}}</p>
+						<p class="card-text"><b>{{product.price|currency}}</b></p>
+						{% comment %} <p class="card-text">{{product.weight}}</p> {% endcomment %}
+						{% comment %} <p class="card-text">{{product.description}}</p> {% endcomment %}
+						 {{product | is_in_cart:request.session.cart }}
+					</div>
+
+					<div class="card-footer p-0 no-gutters">
+						{% if product|is_in_cart:request.session.cart %}
+						<div class="row no-gutters">
+							<form action="/#{{product.id}}" class="col-2 " method="post">
+								{% csrf_token %}
+								
+								<input hidden type="text" name='product' value='{{product.id}}'>
+								<input hidden type="text" name='remove' value='True'>
+								<input type="submit" value=" - " class="btn btn-block btn-success border-right">
+								
+                    	
+							</form>
+							<div class="text-center col btn btn-success">{{product|cart_quantity:request.session.cart}} in Cart</div>
+							<form action="/#{{product.id}}" class="col-2 qty-input" method="post">
+								{% csrf_token %}
+								<input hidden type="text"  name='product' value='{{product.id}}'>
+								<input type="submit" value=" + " class="btn btn-block btn-success border-left">
+								
+							</form>
+						</div>
+						{% else %}
+						<div style='display:flex;justify-content:space-between;padding:20px 0px 20px 0px'>
+							<div>
+								<form action="/#{{product.id}}" method="POST" class="btn-block" id='AddToCart'>
+									{% csrf_token %}
+									<input hidden type="text"  name='product' value='{{product.id}}'>
+									<input type="submit" class="productbtn"
+										value="Add To Cart">
+								</form>
+							</div>
+							<div>
+								<a  href='store/productpage/{{product.id}}'> <button  class="productbtn" id='qv{product.id}' >Buy Now</button></a>
+							</div>
+						</div>
+						
+					
+						{% endif %}
+
+					</div>
+
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% include 'footer.html' %}
+{% endblock %}
+{% block include_js %}
+
+{% if success %}
+<ul class="messages" >
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+            swal('{{ success }}');
+    </script>
+</ul>
+{% endif %}
+
+{% endblock include_js %}

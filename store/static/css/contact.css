@@ -1,0 +1,28 @@
+form-control {
+    /* Add your desired styles here */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Styling for input fields with a specific ID */
+  #id_email {
+    /* Add your desired styles here */
+    color: blue;
+    font-weight: bold;
+  }
+  
+  /* Styling for all input fields within a form-group class */
+  .form-group input {
+    /* Add your desired styles here */
+    margin-bottom: 10px;
+  }
+
+  #id_name{
+    color:black;font-weight:650;font-size:15px
+  }
+  
+  .form-control my-custom-class{
+    background-color: red;
+  }

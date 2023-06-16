@@ -1,0 +1,115 @@
+{% extends 'useradmin_base.html'%}
+{% load custom_filter %}
+{% block content %}
+<div class='container' style='margin-top:50px' >
+    <div class="container">
+        <div class="border rounded p-4 m-4">
+             <p class="display-4 pl-4 ml-4">All Orders</p>
+             <hr>
+             <table class="table">
+                 <thead>
+                     <tr>
+                         <th>Sno.</th>
+                         <th></th>
+                         <th>Image</th>
+                         <th>Product</th>
+                         <th>Date</th>
+                         <th>Price</th>
+                         <th>Quantity</th>
+                         <th>Total Price</th>
+                         <th>Status of Order</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     
+                     {% for order in orders %}
+                     <tr>
+                         <td>{{forloop.counter}}</td>
+                         <td><img style="height: 80px;" class="rounded-circle" src="{{order.product.image.url}}" alt=""></td>
+                         <td>{{order.product.name}}</td>
+                         <td>{{order.date}}</td>
+                         <td>{{order.price|currency}}</td>
+                         <td>{{order.quantity}}</td>
+                         
+                         <td>{{order.quantity|multiply:order.price|currency}}</td>
+                         {% if order.status %}
+                         <td><small class="badge badge-success">Completed</small></td>
+                         {%else%}
+                         <td><small class="badge badge-warning">Pending</small></td>
+                         {% endif %}
+                     </tr>
+     
+                     {% endfor %}
+                    
+                 </tbody>
+     
+             </table>
+            
+        </div>
+     </div>
+{% comment %}      
+     <div class="content-wrapper">
+         <div class="row">
+             <div class="col-lg-12 grid-margin stretch-card">
+                 <div class="card">
+                     <div class="card-body">
+                         <h4 class="card-title">
+                             Track Order Status
+                         </h4>
+                         <p class="card-description">Dashboard <code>order-status</code></p>
+                         <hr/>
+                         <div class="table-responsive">
+                             <div class="wrapper">
+                                 <div id="mymsg" style="display:none">
+                                     <div class="alert alert-success"
+                                         id="alert"
+                                         role="alert"
+                                         style="cursor: pointer; opacity: 0.85">
+                                     <button
+                                     type="button"
+                                     class="close"
+                                     data-dismiss="alert"
+                                     aria-label="Close"
+                                     ><span aria-hidden="true">&times;</span>
+                                     </button>
+                                         <strong>Success!</strong><span id="msg-track"></span>
+                                         <div
+                                             class="progress active"
+                                             role="progressbar"
+                                             style="height: 5px"
+                                         >
+                                             <div
+                                                 class="progress-bar bg-success"
+                                                 id="pb"
+                                                 style="width: 100%; opacity: 0.5"
+                                             ></div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <h4>Track Order</h4>
+                                 <ol class="ProgressBar">
+                                     {% for orderstatus in order.status %}
+                                     <li class="ProgressBar-step {% if orderstatus.0 <= order.status %}is-complete{% endif %}">
+                                         <svg class="ProgressBar-icon">
+                                             <use xlink:href="#checkmark-bold"/>
+                                         </svg>
+                                         <span class="ProgressBar-stepLabel">{{orderstatus.1}}</span>
+                                     </li>
+                                     {% endfor %}
+                                 </ol>
+                             </div>
+     
+                             <svg xmlns="http://www.w3.org/2000/svg">
+                                 <symbol id="checkmark-bold" viewBox="0 0 24 24">
+                                     <path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/>
+                                 </symbol>
+                             </svg>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div> {% endcomment %}
+</div>
+{% comment %} {% include 'footer.html' %} {% endcomment %}
+{%endblock%}

@@ -1,0 +1,220 @@
+
+{% extends 'base.html' %}
+{% block content %}
+{% load cart %}
+{% load custom_filter %}
+{% load static %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'productpage.css' %}">
+<style>
+  .buybtn{
+    background: #A46B42;
+ padding:10px;
+      color: #fff;
+      width:150px;
+      border-color:transparent;
+      border-radius:5px
+  }
+</style>
+
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+	
+	<div class="container">
+		<div class="card">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-6">
+						
+						<div class="preview-pic tab-content">
+						  <div class="tab-pane active" id="pic-1"><img src="{{product.image.url}}"/></div>
+						  <div class="tab-pane" id="pic-2"><img src="{{product.image.url}}"/> </div>
+						  <div class="tab-pane" id="pic-3"><img src="{{product.image.url}}"/> </div>
+						  <div class="tab-pane" id="pic-4"><img src="{{product.image.url}}"/> </div>
+						  <div class="tab-pane" id="pic-5"><img src="{{product.image.url}}"/> </div>
+						</div>
+						<!-- <ul class="preview-thumbnail nav nav-tabs">
+						  <li class="active"><a data-target="#pic-1" data-toggle="tab"><img src="{{product.image.url}}"/> </a></li>
+						  <li><a data-target="#pic-2" data-toggle="tab"> <img src="{{product.image.url}}"/> </a></li>
+						  <li><a data-target="#pic-3" data-toggle="tab"> <img src="{{product.image.url}}"/></a></li>
+						  <li><a data-target="#pic-4" data-toggle="tab"> <img src="{{product.image.url}}"/> </a></li>
+						  <li><a data-target="#pic-5" data-toggle="tab"> <img src="{{product.image.url}}"/></a></li>
+						</ul>
+						 -->
+					</div>
+					<div class="details col-md-6">
+						<h3 class="product-title">{{product.name}}</h3>
+						<div class="rating">
+							<div class="stars">
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star checked"></span>
+								<span class="fa fa-star"></span>
+								<span class="fa fa-star"></span>
+							</div>
+							<span class="review-no">41 reviews</span>
+						</div>
+						<p class="product-description">{{product.description}}</p>
+						<h4 class="price">current price: <span>{{product.price|currency}}</span></h4>
+						<p class="vote"><strong>91%</strong> of buyers enjoyed this product! <strong>(87 votes)</strong></p>
+            {% for order in orders %}
+            <p>{{order.quantity}}</p>
+            {%endfor%}
+
+					
+						
+						<div class="action">
+							<button class="add-to-cart btn btn-default" style='background-color: #A46B42;' type="button">Buy Now</button>
+							{% comment %} <button class="like btn btn-default" type="button"><span class="fa fa-heart"></span></button> {% endcomment %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  <div align='center' style='padding:40px 40px 0px 40px'><h2>Similar Products</h2></div>
+  <div class="row mx-auto" style='padding:40px 40px 20px 40px'>
+    {% for i in related_products %}
+    <div id='productcard'  class="card mx-auto " id={{i.id}} style="width: 18rem;">
+      <img class="card-img-top" src="{{i.image.url}}" alt="Card image cap">
+      <div class="card-body">
+       <div align='center' style='padding:20px 0px 0px 20px'> <p class="card-title">{{i.name}}</p></div>
+        <div align='center' style='padding:10px 0px 0px 20px'><p class="card-text"><b>{{i.price|currency}}</b></p></div>
+       {% comment %} <div  align='center' style='padding:20px 0px 0px 20px'> <p class="card-text"><b>{{i.description}}</b></p></div> {% endcomment %}
+        <div align='center'><button class='buybtn'>  Buy Now</button></div>
+        
+        {% comment %} <div class="card-footer p-0 no-gutters">
+          {% if product|is_in_cart:request.session.cart %}
+          <div class="row no-gutters">
+            <form action="/#{{product.id}}" class="col-2 " method="post">
+              {% csrf_token %}
+              
+              <input hidden type="text" name='product' value='{{product.id}}'>
+              <input hidden type="text" name='remove' value='True'>
+              <input type="submit" value=" - " class="btn btn-block btn-success border-right">
+              
+                    
+            </form>
+            <div class="text-center col btn btn-success">{{product|cart_quantity:request.session.cart}} in Cart</div>
+            <form action="/#{{product.id}}" class="col-2 qty-input" method="post">
+              {% csrf_token %}
+              <input hidden type="text"  name='product' value='{{product.id}}'>
+              <input type="submit" value=" + " class="btn btn-block btn-success border-left">
+              
+            </form>
+          </div>
+          {% else %}
+          <div style='display:flex;justify-content:space-between;padding:20px 0px 20px 0px'>
+            <div>
+              <form action="/#{{product.id}}" method="POST" class="btn-block" id='AddToCart'>
+                {% csrf_token %}
+                <input hidden type="text"  name='product' value='{{product.id}}'>
+                <input type="submit" class="productbtn"
+                  value="Add To Cart">
+              </form>
+            </div>
+            <div>
+              <a  href='store/productpage/{{product.id}}'> <button  class="productbtn" id='qv{product.id}' >Buy Now</button></a>
+            </div>
+          </div>
+          
+        
+          {% endif %}
+
+        </div> {% endcomment %}
+      </div>
+
+      
+    </div>
+    {% endfor %}
+  </div>
+
+
+
+
+
+   </div> 
+
+   <div>
+    <footer class=" text-white text-center text-lg-start" style="background-color: #eba776;">
+      <!-- Grid container -->
+      <div class="container p-4">
+        <!--Grid row-->
+        <div class="row">
+          <!--Grid column-->
+          <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Footer Content</h5>
+    
+            <p>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
+              molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
+              voluptatem veniam, est atque cumque eum delectus sint!
+            </p>
+          </div>
+          <!--Grid column-->
+    
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase">Links</h5>
+    
+            <ul class="list-unstyled mb-0">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 3</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 4</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+    
+          <!--Grid column-->
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="text-uppercase mb-0">Links</h5>
+    
+            <ul class="list-unstyled">
+              <li>
+                <a href="#!" class="text-white">Link 1</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 2</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 3</a>
+              </li>
+              <li>
+                <a href="#!" class="text-white">Link 4</a>
+              </li>
+            </ul>
+          </div>
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </div>
+      <!-- Grid container -->
+    
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: #A46B42;">
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+  </div>
+
+
+
+  
+</div>
+
+
+
+{% endblock %}
